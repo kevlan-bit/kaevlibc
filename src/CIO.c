@@ -20,6 +20,27 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #include "../inc/Cchar.h"
 #include "../inc/Cmemory.h"
 
+memory_block_t fopen(const char *filename, int flags) {
+	memory_block_t b;
+	allocmem(sizeof(file_t), &b);
+	((file_t*)b.ptr)->fd = sys_open(filename, flags, 0644);
+	return b;
+}
+
+void fwrite(memory_block_t *b, const char* buf, size_t count) {
+	sys_write(((file_t*)b->ptr)->fd, buf, count);
+}
+
+void fread(memory_block_t *b, const char* s, size_t count) {
+	sys_read(((file_t*)b->ptr)->fd, (char*)s, count);
+}
+
+void fclose(memory_block_t *b) {
+	if (b == NULL) return;
+	sys_close(((file_t*)b->ptr)->fd);
+	freemem(b);
+}
+
 int print(const char *s) {
 	size_t len = charlen(s);
 	sys_write(1, s, len);

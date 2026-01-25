@@ -19,9 +19,24 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define STDIN 0
 #define STDOUT 1
 #define STDERR 2
+#define O_RDONLY 00
+#define O_WRONLY 01
+#define O_RDWR 02
+#define O_CREAT 0100
+#define O_EXCL 0200
 #define EOF 0
-#include "Cdef.h"
 
+#include "Cdef.h"
+#include "Cmemory.h"
+
+typedef struct {
+	unsigned int fd;
+} file_t;
+
+memory_block_t fopen(const char *filename, int flags);
+void fclose(memory_block_t *b);
+void fwrite(memory_block_t *b, const char* buf, size_t count);
+void fread(memory_block_t *b, const char* s, size_t count);
 int print(const char *s);
 int printf(const char *s, ...);
 char *utoa(unsigned int value, char *buf, int base);

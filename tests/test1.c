@@ -16,13 +16,14 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include "../inc/CIO.h"
 #include "../inc/Cchar.h"
-#include "../inc/Cmemory.h"
-#include "../inc/Cerror.h"
 
 int main(int argc, char** argv) {
-	char buf[1024];
-	printf("> ");
-	input(buf, sizeof(buf));
-	print(buf);
+	memory_block_t b1;
+	allocmem(1024, &b1);
+	memory_block_t b = fopen("teste.txt", O_RDWR | O_CREAT);
+	fread(&b, b1.ptr, sizeof(b1.ptr));
+	fclose(&b);
+	print(b1.ptr);
+	freemem(&b1);
 	return 0;
 }

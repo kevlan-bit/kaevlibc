@@ -14,26 +14,20 @@
 #
 # You should have received a copy of the GNU General Public License
 # along with this program.  If not, see <http://www.gnu.org/licenses/>.
-ASM=as
-LD=ld
-CC=gcc
-CCFLAGS=-ffreestanding -fno-pie -nostdlib
-TARGET=test
-OBJS=build/crt0.o build/sys.o build/start.o build/test.o build/Cchar.o build/CIO.o build/Clib.o build/Cmemory.o build/Cerror.o
+project('kaevc', 'c')
+c_src = files(
+	'src/Cchar.c',
+	'src/CIO.c',
+	'src/start.c',
+	'src/Cmemory.c',
+	'src/Cerror.c',
+	'src/Clib.c'
+)
+asm_src = files(
+	'src/asm/crt0.s',
+	'src/asm/sys.s'
+)
+ccflags = ['-m64', '-ffreestanding', '-nostdlib']
 
-all: build/$(TARGET)
-
-build/$(TARGET): $(OBJS)
-	ld -o $@ -e _start $(OBJS)
-
-build/%.o: src/asm/%.s
-	$(ASM) -o $@ $<
-
-build/%.o: src/%.c
-	$(CC) $(CCFLAGS) -c $< -o $@
-
-build/%.o: tests/%.c
-	$(CC) $(CCFLAGS) -c $< -o $@
-
-clean:
-	rm -rf build/*
+slib = static_library('kaevc', c_src, asm_src, c_args : ccflags)
+subdir('tests')

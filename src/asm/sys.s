@@ -45,4 +45,16 @@ sys_read:
 	syscall
 	ret
 
+.global sys_open
+sys_open:
+	mov $2, %rax
+	syscall
+	ret
+
+.global sys_close
+sys_close:
+	mov $3, %rax
+	syscall
+	ret
+
 .section .note.GNU-stack,"",@progbits
