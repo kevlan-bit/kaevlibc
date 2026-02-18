@@ -26,15 +26,12 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 #define PROT_EXEC  0x04
 #include "Cdef.h"
 
-__attribute__((noreturn))
 void sys_exit(int status);
 ssize_t sys_write(int fd, const void *buf, size_t count);
 void *sys_mmap(void* addr, size_t length, int prot, int flags, int fd, long long offset);
-__attribute__((noreturn))
 void sys_munmap(void *addr, size_t size);
 ssize_t sys_read(int fd, void *buf, size_t count);
 int sys_open(const char *filename, int flags, int mode);
-__attribute__((noreturn))
 void sys_close(unsigned int fd);
 
 #endif

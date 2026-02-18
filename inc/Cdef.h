@@ -20,5 +20,6 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 
 typedef unsigned long size_t;
 typedef long ssize_t;
+typedef signed long intptr_t;
 
 #endif

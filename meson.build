@@ -28,6 +28,7 @@ asm_src = files(
 	'src/asm/sys.s'
 )
 ccflags = ['-m64', '-ffreestanding', '-nostdlib']
+include = include_directories('inc')
 
-slib = static_library('kaevc', c_src, asm_src, c_args : ccflags)
+slib = static_library('kaevc', c_src, asm_src, c_args : ccflags, include_directories : include)
 subdir('tests')

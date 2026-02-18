@@ -16,18 +16,18 @@ along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #ifndef CMEMORY_H
 #define CMEMORY_H
-#define PAGE_SIZE 4096
 #include "Cdef.h"
 
 typedef struct {
 	void *ptr;
+	int free;
 	size_t size;
-} memory_block_t;
+} MPointer;
 
 void *memcpy(void *dest, const void *src, size_t n);
 void *memmove(void *dest, const void *src, size_t n);
 void *memset(void *dest, int value, size_t n);
-int allocmem(size_t size, memory_block_t* block);
-void freemem(memory_block_t* block);
+MPointer allocmem(size_t size);
+void freemem(MPointer *mptr);
 
 #endif

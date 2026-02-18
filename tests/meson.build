@@ -1,2 +1,6 @@
-test1 = executable('test1', 'test1.c', link_with : slib, c_args : ccflags)
+test1 = executable('test1', 'test1.c', link_with : slib, c_args : ccflags, include_directories : include)
+test2 = executable('test2', 'test2.c', link_with : slib, c_args : ccflags, include_directories : include)
+test3 = executable('test3', 'test3.c', link_with : slib, c_args : ccflags, include_directories : include)
 test('Test 1', test1)
+test('Test 2', test2)
+test('Test 3', test3)

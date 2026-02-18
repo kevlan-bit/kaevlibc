@@ -33,10 +33,10 @@ typedef struct {
 	unsigned int fd;
 } file_t;
 
-memory_block_t fopen(const char *filename, int flags);
-void fclose(memory_block_t *b);
-void fwrite(memory_block_t *b, const char* buf, size_t count);
-void fread(memory_block_t *b, const char* s, size_t count);
+MPointer fopen(const char *filename, int flags);
+void fclose(MPointer *b);
+void fwrite(file_t *b, const char* buf, size_t count);
+void fread(file_t *b, const char* s, size_t count);
 int print(const char *s);
 int printf(const char *s, ...);
 char *utoa(unsigned int value, char *buf, int base);

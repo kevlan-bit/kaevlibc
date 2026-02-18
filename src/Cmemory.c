@@ -14,10 +14,10 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "../inc/Cmemory.h"
-#include "../inc/Cdef.h"
-#include "../inc/sys.h"
-#include "../inc/Cerror.h"
+#include <Cmemory.h>
+#include <Cdef.h>
+#include <sys.h>
+#include <Cerror.h>
 
 void *memcpy(void *dest, const void *src, size_t n) {
 	unsigned char *d = dest;
@@ -46,26 +46,21 @@ void *memset(void *dest, int value, size_t n) {
 	return dest;
 }
 
-int allocmem(size_t size, memory_block_t *block) {
-	void *addr = sys_mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_ANONYMOUS | MAP_PRIVATE, -1, 0);
-	if (addr == MMAP_FAIL) {
-		block->size = 0;
-		block->ptr = NULL;
-		gerror("allocmem: memory allocation error");
-		return 0;
+MPointer allocmem(size_t size) {
+	MPointer mp;
+	mp.ptr = sys_mmap(NULL, size, PROT_READ | PROT_WRITE, MAP_PRIVATE | MAP_ANONYMOUS, -1, 0);
+	if (mp.ptr == MMAP_FAIL) {
+		mp.ptr = NULL;
+		mp.size = 0;
 	}
-
-	block->ptr = addr;
-	block->size = size;
-	return 1;
+	else {
+		mp.size = size;
+	}
+	mp.free = 1;
+	return mp;
 }
 
-void freemem(memory_block_t *block) {
-	// void *base = (char*)ptr-sizeof(size_t);
-	// size_t allocsize = *(size_t*)base;
-	if (block->ptr != NULL) {
-		sys_munmap(block->ptr, block->size);
-		block->ptr = NULL;
-		block->size = 0;
-	}
+void freemem(MPointer *mptr) {
+	if (mptr->free != 0) return;
+	sys_munmap(mptr->ptr, mptr->size);
 }

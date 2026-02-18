@@ -14,13 +14,14 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "../inc/sys.h"
+#include <sys.h>
+#include <Cdef.h>
 
 char **__environ;
 
-__attribute__((noreturn))
+extern int main(int, char**, char**);
 void __libc_start(void *stack) {
-	unsigned long *sp = (unsigned long*)stack;
+	size_t *sp = (unsigned long*)stack;
 	int argc = *sp++;
 	char **argv = (char**)sp;
 	sp += argc+1;
@@ -29,10 +30,11 @@ void __libc_start(void *stack) {
 	while (*sp) sp++;
 	sp++;
 	while (sp[0]) {
-		unsigned long type = sp[0];
-		unsigned long value = sp[1];
+		// size_t type = sp[0];
+		// size_t value = sp[1];
+		// TODO: AUXV
 		sp += 2;
 	}
-	extern int main(int, char**, char**);
-	sys_exit(main(argc, argv, envp));
+	int status = main(argc, argv, envp);
+	sys_exit(status);
 }

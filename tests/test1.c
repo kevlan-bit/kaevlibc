@@ -14,16 +14,22 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "../inc/CIO.h"
-#include "../inc/Cchar.h"
+#include <CIO.h>
+#include <Cchar.h>
+#include <Cdef.h>
 
 int main(int argc, char** argv) {
-	memory_block_t b1;
-	allocmem(1024, &b1);
-	memory_block_t b = fopen("teste.txt", O_RDWR | O_CREAT);
-	fread(&b, b1.ptr, sizeof(b1.ptr));
-	fclose(&b);
-	print(b1.ptr);
-	freemem(&b1);
+	MPointer pointers[1000];
+	for (size_t i = 0;i < 1000;i++) {
+		pointers[i] = allocmem(64);
+		if (!pointers[i].ptr) {
+			printf("Fail: %d\n", i);
+			return 1;
+		}
+	}
+	for (size_t i = 0;i < 1000;i++) {
+		freemem(&pointers[i]);
+	}
+	print("OK!");
 	return 0;
 }

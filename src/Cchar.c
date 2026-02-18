@@ -14,8 +14,8 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include "../inc/Cchar.h"
-#include "../inc/Cdef.h"
+#include <Cchar.h>
+#include <Cdef.h>
 size_t charlen(const char *s) {
 	size_t l = 0;
 	while (s[l]) l++;

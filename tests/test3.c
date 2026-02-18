@@ -14,16 +14,18 @@ GNU General Public License for more details.
 You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
-#include <Clib.h>
-#include <Cdef.h>
+#include <CIO.h>
 #include <Cchar.h>
 
-char *getenv(const char *name) {
-	size_t len = charlen(name);
-	for (char **env = __environ;*env;env++) {
-		if (!charncmp(*env, name, len) && (*env)[len] == '=') {
-			return *env+len+1;
-		}
-	}
-	return 0;
+int main() {
+    const char *msg = "Test";
+    MPointer str = allocmem(charlen(msg)+1);
+    if (str.ptr == NULL) {
+        print("FAIL!");
+        return 1;
+    }
+    charcpy(str.ptr, msg);
+    freemem(&str);
+    print("OK!");
+    return 0;
 }

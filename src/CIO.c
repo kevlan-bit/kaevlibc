@@ -15,28 +15,26 @@ You should have received a copy of the GNU General Public License
 along with this program.  If not, see <http://www.gnu.org/licenses/>.
 */
 #include <stdarg.h>
-#include "../inc/CIO.h"
-#include "../inc/sys.h"
-#include "../inc/Cchar.h"
-#include "../inc/Cmemory.h"
+#include <CIO.h>
+#include <sys.h>
+#include <Cchar.h>
+#include <Cmemory.h>
 
-memory_block_t fopen(const char *filename, int flags) {
-	memory_block_t b;
-	allocmem(sizeof(file_t), &b);
-	((file_t*)b.ptr)->fd = sys_open(filename, flags, 0644);
-	return b;
+MPointer fopen(const char *filename, int flags) {
+	MPointer mptr = allocmem(sizeof(file_t));
+	((file_t*)mptr.ptr)->fd = sys_open(filename, flags, 0644);
+	return mptr;
 }
 
-void fwrite(memory_block_t *b, const char* buf, size_t count) {
-	sys_write(((file_t*)b->ptr)->fd, buf, count);
+void fwrite(file_t *b, const char* buf, size_t count) {
+	sys_write(b->fd, buf, count);
 }
 
-void fread(memory_block_t *b, const char* s, size_t count) {
-	sys_read(((file_t*)b->ptr)->fd, (char*)s, count);
+void fread(file_t *b, const char* s, size_t count) {
+	sys_read(b->fd, (char*)s, count);
 }
 
-void fclose(memory_block_t *b) {
-	if (b == NULL) return;
+void fclose(MPointer *b) {
 	sys_close(((file_t*)b->ptr)->fd);
 	freemem(b);
 }
